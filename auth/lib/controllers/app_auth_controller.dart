@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:auth/models/response_model.dart';
+import 'package:auth/utils/app_utils.dart';
 import 'package:conduit/conduit.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
@@ -21,11 +22,13 @@ class AppAuthController extends ResourceController {
     try {
       final qFindUser = Query<User>(managedContext)
         ..where((table) => table.email).equalTo(user.email)
-        ..returningProperties((table) => [
-              table.id,
-              table.salt,
-              table.hashPassword,
-            ]);
+        ..returningProperties(
+          (table) => [
+            table.id,
+            table.salt,
+            table.hashPassword,
+          ],
+        );
 
       final findUser = await qFindUser.fetchOne();
       if (findUser == null) {
@@ -34,7 +37,7 @@ class AppAuthController extends ResourceController {
       final requestHashPassword =
           generatePasswordHash(user.password ?? "", findUser.salt ?? "");
       if (requestHashPassword == findUser.hashPassword) {
-        await updateTokens(findUser.id ?? -1, managedContext);
+        await _updateTokens(findUser.id ?? -1, managedContext);
         final user = await managedContext.fetchObjectWithID<User>(findUser.id);
         return Response.ok(ResponseModel(
           data: user?.backing.contents,
@@ -71,7 +74,7 @@ class AppAuthController extends ResourceController {
           ..values.hashPassword = hashPassword;
         final createdUser = await qCreateUser.insert();
         id = createdUser.asMap()["id"];
-        await updateTokens(id, transaction);
+        await _updateTokens(id, transaction);
       });
       final userData = await managedContext.fetchObjectWithID<User>(id);
       return Response.ok(
@@ -84,7 +87,7 @@ class AppAuthController extends ResourceController {
     }
   }
 
-  Future<void> updateTokens(int id, ManagedContext transaction) async {
+  Future<void> _updateTokens(int id, ManagedContext transaction) async {
     final Map<String, dynamic> tokens = _getTokens(id);
     final qUpdateTokens = Query<User>(transaction)
       ..where((user) => user.id).equalTo(id)
@@ -96,23 +99,20 @@ class AppAuthController extends ResourceController {
   @Operation.post("refresh")
   Future<Response> refreshToken(
       @Bind.path("refresh") String refreshToken) async {
-    final User fetchedUser = User();
-
-    //TODO: connect db
-    //TODO: find user
-    //TODO: check token
-    //TODO: fetch user
-
-    return Response.ok(
-      ResponseModel(
-        data: {
-          "id": fetchedUser.id,
-          "accessToken": fetchedUser.accessToken,
-          "refreshToken": fetchedUser.refreshToken,
-        },
-        message: "Successful token refresh.",
-      ).toJson(),
-    );
+    try {
+      final id = AppUtils.getIdFromToken(refreshToken);
+      await _updateTokens(id, managedContext);
+      final user = await managedContext.fetchObjectWithID<User>(id);
+      return Response.ok(
+        ResponseModel(
+          data: user?.backing.contents,
+          message: "Successful refresh of tokens.",
+        ),
+      );
+    } catch (error) {
+      return Response.serverError(
+          body: ResponseModel(message: error.toString()));
+    }
   }
 
   Map<String, dynamic> _getTokens(int id) {
