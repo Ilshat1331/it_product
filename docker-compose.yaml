@@ -1,15 +1,48 @@
 version: '3.8'
 
+# 6100 - auth
+# 6101 - db_auth
+# 6200 - data
+# 6201 - db_data
+
 services:
+  auth:
+    build: ./auth
+    container_name: auth
+    ports:
+      - 6100:6100
+    environment:
+      - SECRET_KEY=SECRET_KEY
+      - PORT=6100
+      - DB_USER=admin
+      - DB_PASSWORD=root
+      - DB_HOST=db_auth
+      - DB_PORT=6101
+      - DB_NAME=postgres
+    depends_on:
+      - db_auth
+    networks:
+      - internal_net
   db_auth:
     container_name: db_auth
     ports:
-      - "5432:5432"
+      - "6101:6101"
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=admin
     image: postgres:15.0-alpine
+    command:
+      - "postgres"
+      - "-c"
+      - "port=6101"
     volumes:
       - db_auth_vol:/var/lib/postgresql/data
+    networks:
+      - internal_net
+
 volumes:
   db_auth_vol: {}
+
+networks:
+  internal_net:
+    driver: bridge
