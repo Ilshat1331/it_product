@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:auth/utils/app_const.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 abstract class AppUtils {
@@ -7,9 +6,7 @@ abstract class AppUtils {
 
   static int getIdFromToken(String token) {
     try {
-      final key = Platform.environment["SECRET_KEY"];
-      //TODO change SECRET_KEY
-      final jwtClaim = verifyJwtHS256Signature(token, key ?? "SECRET_KEY");
+      final jwtClaim = verifyJwtHS256Signature(token, AppConst.secretKey);
       return int.parse(jwtClaim["id"].toString());
     } catch (_) {
       rethrow;

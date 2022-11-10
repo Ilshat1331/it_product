@@ -1,6 +1,5 @@
-import 'dart:io';
-
-import 'package:auth/models/response_model.dart';
+import 'package:auth/utils/app_const.dart';
+import 'package:auth/utils/app_response.dart';
 import 'package:auth/utils/app_utils.dart';
 import 'package:conduit/conduit.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
@@ -14,9 +13,10 @@ class AppAuthController extends ResourceController {
   @Operation.post()
   Future<Response> signIn(@Bind.body() User user) async {
     if (user.password == null || user.email == null) {
-      return Response.badRequest(
-          body:
-              ResponseModel(message: "Password and email fields is required."));
+      return AppResponse.badRequest(
+        error: "Login failed",
+        message: "Password and email fields is required.",
+      );
     }
 
     try {
@@ -39,25 +39,24 @@ class AppAuthController extends ResourceController {
       if (requestHashPassword == findUser.hashPassword) {
         await _updateTokens(findUser.id ?? -1, managedContext);
         final user = await managedContext.fetchObjectWithID<User>(findUser.id);
-        return Response.ok(ResponseModel(
-          data: user?.backing.contents,
+        return AppResponse.ok(
+          body: user?.backing.contents,
           message: "Successful authorization.",
-        ));
+        );
       } else {
         throw QueryException.input("Invalid password.", []);
       }
-    } on QueryException catch (error) {
-      return Response.serverError(body: ResponseModel(message: error.message));
+    } catch (error) {
+      return AppResponse.serverError(error, message: "Authorisation Error.");
     }
   }
 
   @Operation.put()
   Future<Response> signUp(@Bind.body() User user) async {
     if (user.password == null || user.email == null || user.username == null) {
-      return Response.badRequest(
-        body: ResponseModel(
-          message: "Password, email and username fields is required.",
-        ),
+      return AppResponse.badRequest(
+        error: "Registration error",
+        message: "Password, email and username fields is required.",
       );
     }
 
@@ -77,13 +76,11 @@ class AppAuthController extends ResourceController {
         await _updateTokens(id, transaction);
       });
       final userData = await managedContext.fetchObjectWithID<User>(id);
-      return Response.ok(
-        ResponseModel(
-            data: userData?.backing.contents,
-            message: "Successful registration."),
-      );
-    } on QueryException catch (error) {
-      return Response.serverError(body: ResponseModel(message: error.message));
+      return AppResponse.ok(
+          body: userData?.backing.contents,
+          message: "Successful registration.");
+    } catch (error) {
+      return AppResponse.serverError(error, message: "Registration Error.");
     }
   }
 
@@ -103,29 +100,27 @@ class AppAuthController extends ResourceController {
       final id = AppUtils.getIdFromToken(refreshToken);
       final user = await managedContext.fetchObjectWithID<User>(id);
       if (user?.refreshToken != refreshToken) {
-        return Response.unauthorized(
-            body: ResponseModel(message: "Token is not valid."));
+        return AppResponse.unauthorized(
+          error: "Not authorized",
+          message: "Token is not valid.",
+        );
       } else {
         await _updateTokens(id, managedContext);
         final user = await managedContext.fetchObjectWithID<User>(id);
-        return Response.ok(
-          ResponseModel(
-            data: user?.backing.contents,
-            message: "Successful refresh of tokens.",
-          ),
+        return AppResponse.ok(
+          body: user?.backing.contents,
+          message: "Successful refresh of tokens.",
         );
       }
     } catch (error) {
-      return Response.serverError(
-          body: ResponseModel(message: error.toString()));
+      return AppResponse.serverError(error, message: "Refresh token Error.");
     }
   }
 
   Map<String, dynamic> _getTokens(int id) {
-    //TODO remove when release
-    final key = Platform.environment["SECRET_KEY"] ?? "SECRET_KEY";
+    final key = AppConst.secretKey;
     final accessClaimSet = JwtClaim(
-      maxAge: Duration(minutes: 60),
+      maxAge: Duration(minutes: 1),
       otherClaims: {"id": id},
     );
     final refreshClaimSet = JwtClaim(otherClaims: {"id": id});
