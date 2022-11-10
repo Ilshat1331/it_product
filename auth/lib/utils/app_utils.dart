@@ -1,4 +1,5 @@
 import 'package:auth/utils/app_const.dart';
+import 'package:conduit/conduit.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 abstract class AppUtils {
@@ -8,6 +9,15 @@ abstract class AppUtils {
     try {
       final jwtClaim = verifyJwtHS256Signature(token, AppConst.secretKey);
       return int.parse(jwtClaim["id"].toString());
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  static int getIdFromHeader(String header) {
+    try {
+      final token = AuthorizationBearerParser().parse(header);
+      return getIdFromToken(token ?? "");
     } catch (_) {
       rethrow;
     }

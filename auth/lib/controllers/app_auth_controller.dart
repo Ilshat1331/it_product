@@ -14,9 +14,7 @@ class AppAuthController extends ResourceController {
   Future<Response> signIn(@Bind.body() User user) async {
     if (user.password == null || user.email == null) {
       return AppResponse.badRequest(
-        error: "Login failed",
-        message: "Password and email fields is required.",
-      );
+          message: "Password and email fields is required.");
     }
 
     try {
@@ -55,9 +53,7 @@ class AppAuthController extends ResourceController {
   Future<Response> signUp(@Bind.body() User user) async {
     if (user.password == null || user.email == null || user.username == null) {
       return AppResponse.badRequest(
-        error: "Registration error",
-        message: "Password, email and username fields is required.",
-      );
+          message: "Password, email and username fields is required.");
     }
 
     final salt = generateRandomSalt();
@@ -120,7 +116,7 @@ class AppAuthController extends ResourceController {
   Map<String, dynamic> _getTokens(int id) {
     final key = AppConst.secretKey;
     final accessClaimSet = JwtClaim(
-      maxAge: Duration(minutes: 1),
+      maxAge: Duration(minutes: 30),
       otherClaims: {"id": id},
     );
     final refreshClaimSet = JwtClaim(otherClaims: {"id": id});
