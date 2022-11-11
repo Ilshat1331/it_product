@@ -40,8 +40,44 @@ services:
     networks:
       - internal_net
 
+  db_data:
+    container_name: db_data
+    ports:
+      - "6201:6201"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=admin
+    image: postgres:15.0-alpine
+    command:
+      - "postgres"
+      - "-c"
+      - "port=6201"
+    volumes:
+      - db_data_vol:/var/lib/postgresql/data
+    networks:
+      - internal_net
+
+  data:
+    build: ./data
+    container_name: data
+    ports:
+      - 6200:6200
+    environment:
+      - SECRET_KEY=SECRET_KEY
+      - PORT=6200
+      - DB_USER=admin
+      - DB_PASSWORD=root
+      - DB_HOST=db_data
+      - DB_PORT=6201
+      - DB_NAME=postgres
+    depends_on:
+      - db_data
+    networks:
+      - internal_net
+
 volumes:
   db_auth_vol: {}
+  db_data_vol: {}
 
 networks:
   internal_net:

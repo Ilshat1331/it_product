@@ -1,2 +1,3 @@
 auth/migrations/
+data/migrations/
 auth/.dart_tool/
