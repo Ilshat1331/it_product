@@ -1,3 +1,4 @@
 auth/migrations/
 data/migrations/
 auth/.dart_tool/
+data/.dart_tool/

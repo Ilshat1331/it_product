@@ -9,8 +9,6 @@ services:
   auth:
     build: ./auth
     container_name: auth
-    ports:
-      - 6100:6100
     environment:
       - SECRET_KEY=SECRET_KEY
       - PORT=6100
@@ -60,8 +58,6 @@ services:
   data:
     build: ./data
     container_name: data
-    ports:
-      - 6200:6200
     environment:
       - SECRET_KEY=SECRET_KEY
       - PORT=6200
@@ -74,6 +70,19 @@ services:
       - db_data
     networks:
       - internal_net
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.23.2-alpine
+    networks:
+      - internal_net
+    ports:
+      - 80:80
+    depends_on:
+      - auth
+      - data
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   db_auth_vol: {}
