@@ -7,6 +7,7 @@ version: '3.8'
 
 services:
   auth:
+    restart: on-failure
     build: ./auth
     container_name: auth
     environment:
@@ -24,6 +25,7 @@ services:
       - internal_net
 
   db_auth:
+    restart: on-failure
     container_name: db_auth
     ports:
       - "6101:6101"
@@ -41,6 +43,7 @@ services:
       - internal_net
 
   db_data:
+    restart: on-failure
     container_name: db_data
     ports:
       - "6201:6201"
@@ -58,6 +61,7 @@ services:
       - internal_net
 
   data:
+    restart: on-failure
     build: ./data
     container_name: data
     environment:
@@ -74,6 +78,7 @@ services:
       - internal_net
 
   nginx:
+    restart: on-failure
     container_name: nginx
     image: nginx:1.23.2-alpine
     networks:
