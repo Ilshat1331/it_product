@@ -10,4 +10,6 @@ abstract class AppEnv {
   static final String dbHost = Platform.environment["DB_HOST"] ?? "";
   static final String dbPort = Platform.environment["DB_PORT"] ?? "";
   static final String dbDatabaseName = Platform.environment["DB_NAME"] ?? "";
+  static final int time =
+      int.tryParse(Platform.environment["TIME"] ?? "") ?? 30;
 }

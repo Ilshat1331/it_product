@@ -17,10 +17,12 @@ services:
       - DB_HOST=db_auth
       - DB_PORT=6101
       - DB_NAME=postgres
+      - TIME=1
     depends_on:
       - db_auth
     networks:
       - internal_net
+
   db_auth:
     container_name: db_auth
     ports:

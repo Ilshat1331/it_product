@@ -16,7 +16,7 @@ class AppTokenController extends Controller {
       jwtClaim.validate();
       return request;
     } catch (error) {
-      return AppResponse.serverError(error);
+      return AppResponse.unauthorized(error);
     }
   }
 }
