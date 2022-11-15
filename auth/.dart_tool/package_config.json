@@ -51,49 +51,49 @@
     },
     {
       "name": "conduit",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit-3.2.9",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit-3.2.10",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_codable",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_codable-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_codable-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_common",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_common-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_common-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_config",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_config-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_config-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_isolate_exec",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_isolate_exec-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_isolate_exec-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_open_api",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_open_api-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_open_api-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_password_hash",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_password_hash-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_password_hash-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "conduit_runtime",
-      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_runtime-3.2.8",
+      "rootUri": "file:///home/ilshat/.pub-cache/hosted/pub.dartlang.org/conduit_runtime-3.2.9",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -404,7 +404,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-11-12T11:04:59.284765Z",
+  "generated": "2022-11-15T07:38:58.145500Z",
   "generator": "pub",
   "generatorVersion": "2.18.4"
 }
