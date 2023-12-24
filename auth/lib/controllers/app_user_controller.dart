@@ -4,7 +4,7 @@ import 'package:auth/models/user.dart';
 import 'package:auth/utils/app_const.dart';
 import 'package:auth/utils/app_response.dart';
 import 'package:auth/utils/app_utils.dart';
-import 'package:conduit/conduit.dart';
+import 'package:conduit_core/conduit_core.dart';
 
 class AppUserController extends ResourceController {
   final ManagedContext managedContext;

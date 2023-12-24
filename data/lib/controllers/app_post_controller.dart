@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:conduit_core/conduit_core.dart';
 import 'package:data/utils/app_response.dart';
 import 'package:data/models/post.dart';
 import 'package:data/models/author.dart';
 
-import 'package:conduit/conduit.dart';
 import 'package:data/utils/app_utils.dart';
 
 class AppPostController extends ResourceController {

@@ -1,5 +1,5 @@
 import 'package:auth/utils/app_env.dart';
-import 'package:conduit/conduit.dart';
+import 'package:conduit_core/conduit_core.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 abstract class AppUtils {

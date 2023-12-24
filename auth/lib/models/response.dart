@@ -1,9 +1,9 @@
-class ResponseModel {
+class AppResponseModel {
   final dynamic error;
   final dynamic data;
   final dynamic message;
 
-  ResponseModel({
+  AppResponseModel({
     this.error,
     this.data,
     this.message,

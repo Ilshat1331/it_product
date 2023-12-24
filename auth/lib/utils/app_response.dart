@@ -1,32 +1,32 @@
 import 'package:auth/models/response.dart';
-import 'package:conduit/conduit.dart';
+import 'package:conduit_core/conduit_core.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
 
 class AppResponse extends Response {
   AppResponse.serverError(dynamic error, {String? message})
       : super.serverError(body: _getResponseModel(error, message));
 
-  static ResponseModel _getResponseModel(error, String? message) {
+  static AppResponseModel _getResponseModel(error, String? message) {
     if (error is QueryException) {
-      return ResponseModel(
+      return AppResponseModel(
         error: error.toString(),
         message: message ?? error.message,
       );
     }
     if (error is JwtException) {
-      return ResponseModel(
+      return AppResponseModel(
         error: error.toString(),
         message: message ?? error.message,
       );
     }
-    return ResponseModel(
+    return AppResponseModel(
       error: error.toString(),
       message: message ?? "Unknown error.",
     );
   }
 
   AppResponse.ok({dynamic body, String? message})
-      : super.ok(ResponseModel(
+      : super.ok(AppResponseModel(
           data: body,
           message: message,
         ));
@@ -36,5 +36,5 @@ class AppResponse extends Response {
 
   AppResponse.badRequest({String? message})
       : super.badRequest(
-            body: ResponseModel(message: message ?? "Request error."));
+            body: AppResponseModel(message: message ?? "Request error."));
 }

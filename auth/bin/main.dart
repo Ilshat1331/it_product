@@ -1,6 +1,6 @@
 import 'package:auth/auth.dart';
 import 'package:auth/utils/app_env.dart';
-import 'package:conduit/conduit.dart';
+import 'package:conduit_core/conduit_core.dart';
 
 void main(List<String> arguments) async {
   final int port = int.tryParse(AppEnv.port) ?? 0;
